@@ -8,29 +8,32 @@ const Chat = () => {
 
   latestChat.current = chat;
 
-  useEffect(async () => {
+  useEffect(() => {
     const newConnection = new HubConnectionBuilder()
-      .withUrl("https://localhost:7144/flighthub")
+      .withUrl("https://localhost:7008/FlightHub")
       .withAutomaticReconnect()
       .build();
 
     setConnection(newConnection);
   }, []);
 
-  useEffect(async () => {
-    if (connection) {
-      console.log(connection);
-      await connection
-        .start()
-        .then((result) => {
-          console.log("Connected!");
+  useEffect(() => {
+    async function getData() {
+      if (connection) {
+        console.log(connection);
+        await connection
+          .start()
+          .then((result) => {
+            console.log("Connected!");
 
-          connection.on("ReceiveFlightData", (message) => {
-            console.log(message);
-          });
-        })
-        .catch((e) => console.log("Connection failed: ", e));
+            connection.on("FlightData", (message) => {
+              console.log(message);
+            });
+          })
+          .catch((e) => console.log("Connection failed: ", e));
+      }
     }
+    getData();
   }, [connection]);
 
   const sendMessage = async (user, message) => {

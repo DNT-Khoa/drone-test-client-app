@@ -10,9 +10,13 @@ const Chat = () => {
 
   useEffect(() => {
     const newConnection = new HubConnectionBuilder()
-      .withUrl("https://localhost:7008/FlightHub")
+      .withUrl("https://localhost:7000/FlightHub")
       .withAutomaticReconnect()
       .build();
+
+    // Check for internet
+    // If internet, connect to https://localhost:5000/FlightHub
+    // If no internet, connect to https://localhost:7000/FlightHub
 
     setConnection(newConnection);
   }, []);

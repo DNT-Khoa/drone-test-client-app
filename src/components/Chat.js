@@ -40,6 +40,10 @@ const Chat = () => {
                         connection.on('FlightData', (message) => {
                             console.log(message);
                         });
+
+                        connection.on('FlightDataDebugMessage', (message) => {
+                            document.getElementById('debugMessagesTextArea').append(message+'\n')
+                        });
                     })
                     .catch((e) => console.log('Connection failed: ', e));
             }
@@ -62,10 +66,20 @@ const Chat = () => {
         axios.post(`https://localhost:7001/DroneCommand/RunScript`, { scriptName });
     };
 
+    const startMission = () => {
+        axios.post(`https://localhost:7001/DroneCommand/StartMission`, { Id: missionId });
+    };
+
+    const endMission = () => {
+        axios.post(`https://localhost:7001/DroneCommand/EndMission`, { Id: missionId });
+    };
+
     return (
         <div style={{ padding: '25px' }}>
             <label htmlFor="missionId">Mission ID</label>
             <input type="text" onChange={(e) => setMissionId(e.target.value)} placeholder="Enter mission id" />
+            <button onClick={startMission}>Start Mission</button>
+            <button onClick={endMission}>End Mission</button>
             <br />
             <label htmlFor="latitude">Latitude</label>
             <input type="text" onChange={(e) => setLatitude(e.target.value)} placeholder="Latitude" />
@@ -92,6 +106,15 @@ const Chat = () => {
             <input type="text" onChange={(e) => setScriptName(e.target.value)} placeholder="Enter script name" />
             <br />
             <button onClick={runScript}>Run script</button>
+
+            <br />
+            <br />
+            <br />
+            
+            <p>Debug messages</p>
+            <textarea id="debugMessagesTextArea" name="debugMessages" rows="20" cols="100">
+                
+            </textarea>
         </div>
     );
 };

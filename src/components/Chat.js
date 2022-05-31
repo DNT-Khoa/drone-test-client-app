@@ -11,6 +11,7 @@ const Chat = () => {
     const [order, setOrder] = useState();
 
     const [scriptName, setScriptName] = useState();
+    const [coords, setCoords] = useState();
 
     const [connection, setConnection] = useState(null);
     const [chat, setChat] = useState([]);
@@ -51,6 +52,10 @@ const Chat = () => {
         getData();
     }, [connection]);
 
+    const eraseTextarea = () => {
+        document.getElementById('debugMessagesTextArea').value = "";
+    }
+
     const sendWaypoint = () => {
         axios.post(`https://localhost:7001/DroneCommand/Waypoint`, {
             latitude,
@@ -66,6 +71,18 @@ const Chat = () => {
         axios.post(`https://localhost:7001/DroneCommand/RunScript`, { scriptName });
     };
 
+    const startTraining = () => {
+        axios.post(`https://localhost:7001/DroneCommand/RunScript`, { scriptName: 'f_data.py' });
+    };
+
+    const startListening = () => {
+        axios.post(`https://localhost:7001/DroneCommand/StartListeningToDrone`);
+    };
+
+    const sendCoords = () => {
+        axios.post(`https://localhost:7001/DroneCommand/SendTrainingCoords`, { scriptName: coords });
+    };
+
     const startMission = () => {
         axios.post(`https://localhost:7001/DroneCommand/StartMission`, { Id: missionId });
     };
@@ -76,7 +93,7 @@ const Chat = () => {
 
     return (
         <div style={{ padding: '25px' }}>
-            <label htmlFor="missionId">Mission ID</label>
+            {/* <label htmlFor="missionId">Mission ID</label>
             <input type="text" onChange={(e) => setMissionId(e.target.value)} placeholder="Enter mission id" />
             <button onClick={startMission}>Start Mission</button>
             <button onClick={endMission}>End Mission</button>
@@ -96,7 +113,16 @@ const Chat = () => {
             <label htmlFor="order">Order</label>
             <input type="text" onChange={(e) => setOrder(e.target.value)} placeholder="Order" />
             <br />
-            <button onClick={sendWaypoint}>Send Waypoint</button>
+            <button onClick={sendWaypoint}>Send Waypoint</button> */}
+
+            <br />
+            <br />
+            
+            <button onClick={startTraining}>Start Training</button>
+            <br />
+            <label htmlFor="coords">Coords</label>
+            <input type="text" onChange={(e) => setCoords(e.target.value)} placeholder="Coords" />
+            <button onClick={sendCoords}>Send Coords</button>
 
             <br />
             <br />
@@ -111,7 +137,8 @@ const Chat = () => {
             <br />
             <br />
             
-            <p>Debug messages</p>
+            <p>Debug messages<button onClick={eraseTextarea}>Clear</button></p>
+            
             <textarea id="debugMessagesTextArea" name="debugMessages" rows="20" cols="100">
                 
             </textarea>

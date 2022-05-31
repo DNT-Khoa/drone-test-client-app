@@ -43,7 +43,9 @@ const Chat = () => {
                         });
 
                         connection.on('FlightDataDebugMessage', (message) => {
-                            document.getElementById('debugMessagesTextArea').append(message+'\n')
+                            var textarea = document.getElementById('debugMessagesTextArea');
+                            textarea.append(message+'\n');
+                            textarea.scrollTop = textarea.scrollHeight;
                         });
                     })
                     .catch((e) => console.log('Connection failed: ', e));

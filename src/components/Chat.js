@@ -36,15 +36,16 @@ const Chat = () => {
                 await connection
                     .start()
                     .then((result) => {
-                        console.log('Connected!');
+                        var textarea = document.getElementById('debugMessagesTextArea');
+                        
+                        textarea.append('Connected!');
 
                         connection.on('FlightData', (message) => {
                             console.log(message);
                         });
 
                         connection.on('FlightDataDebugMessage', (message) => {
-                            var textarea = document.getElementById('debugMessagesTextArea');
-                            textarea.append(message+'\n');
+                            textarea.append(message + '\n');
                             textarea.scrollTop = textarea.scrollHeight;
                         });
                     })
@@ -119,13 +120,11 @@ const Chat = () => {
 
             <br />
             <br />
-            
-            <button onClick={startTraining}>Start Training</button>
-            <br />
             <label htmlFor="coords">Coords</label>
             <input type="text" onChange={(e) => setCoords(e.target.value)} placeholder="Coords" />
             <button onClick={sendCoords}>Send Coords</button>
-
+            <br />
+            <button onClick={startTraining}>Start Training</button>
             <br />
             <br />
             <br />

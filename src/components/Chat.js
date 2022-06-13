@@ -38,7 +38,7 @@ const Chat = () => {
                     .then((result) => {
                         var textarea = document.getElementById('debugMessagesTextArea');
                         
-                        textarea.append('Connected!');
+                        textarea.append('Connected!' + '\n');
 
                         connection.on('FlightData', (message) => {
                             console.log(message);
